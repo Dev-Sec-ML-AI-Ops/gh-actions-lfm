@@ -19,4 +19,10 @@ jobs:
             # Examples: 12.x, 10.15.1, >=10.15.0, lts/Hydrogen, 16-nightly, latest, node
             node-version: '24'
         - name: Install Dependencies
-          run: npm ci
+          run: |
+            cd 04-using-actions/reate-app
+            npm ci
+        - name: Install Dependencies
+          run: |
+            cd 04-using-actions/reate-app
+            npm run test
