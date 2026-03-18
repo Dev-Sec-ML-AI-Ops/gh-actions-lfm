@@ -9,4 +9,4 @@ jobs:
           uses: actions/checkout@v6
 
         - name: Printing Folders
-          run: echo ls
+          run: ls
