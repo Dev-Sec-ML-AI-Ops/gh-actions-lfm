@@ -1,6 +1,5 @@
-name: 01 - Workflow Events
+name: 03 - Workflow Runners
 on: 
-  push:
   workflow_dispatch:
 jobs:
   ubuntu-echo:
@@ -8,16 +7,16 @@ jobs:
     steps:
         - name: Show OS
           run: |
-            echo "This job is running on an $RUNNER_OS."
+            echo "This job is running on an $RUNNER_OS runner."
   windows-echo:
     runs-on: windows-latest
     steps:
         - name: Show OS
           run: |
-            echo "This job is running on a $RUNNER_OS."
+            echo "This job is running on a $RUNNER_OS runner."
   mac-echo:
     runs-on: macos-latest
     steps:
         - name: Show OS
           run: |
-            echo "This job is running on a $RUNNER_OS."
+            echo "This job is running on a $RUNNER_OS runner."
