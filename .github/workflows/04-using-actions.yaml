@@ -1,9 +1,12 @@
 name: 04 - Using Actions
-on: push
+on: workflow_dispatch
   
 jobs:
   build:
     runs-on: ubuntu-latest
+    defaults: 
+      run:
+        working-directory: 04-using-actions/reate-app
     steps:
         - name: Checkout Code
           uses: actions/checkout@v6
@@ -21,7 +24,7 @@ jobs:
         - name: Install Dependencies
             #cd 04-using-actions/reate-app
           run: npm ci
-          working-directory: 04-using-actions/reate-app
+          #working-directory: 04-using-actions/reate-app
         - name: Linting
           run: npm run lint
-          working-directory: 04-using-actions/reate-app
+          #working-directory: 04-using-actions/reate-app
