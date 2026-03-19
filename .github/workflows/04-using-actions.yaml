@@ -17,12 +17,11 @@ jobs:
             # Version Spec of the version to use in SemVer notation.
             # It also admits such aliases as lts/*, latest, nightly and canary builds
             # Examples: 12.x, 10.15.1, >=10.15.0, lts/Hydrogen, 16-nightly, latest, node
-            node-version: '24'
+            node-version: '24.x'
         - name: Install Dependencies
-          run: |
-            cd 04-using-actions/reate-app
-            npm ci
-        - name: Install Dependencies
-          run: |
-            cd 04-using-actions/reate-app
-            npm run test
+            #cd 04-using-actions/reate-app
+          run: npm ci
+          working-directory: 04-using-actions/reate-app
+        - name: Linting
+          run: npm run lint
+          working-directory: 04-using-actions/reate-app
