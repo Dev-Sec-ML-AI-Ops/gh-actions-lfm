@@ -1,5 +1,7 @@
 name: 06 - Contexts
-#run-name: My custom workflow run name - ${{ runner.os }} -- Wrong
+# run-name: My custom workflow run name - ${{ runner.os }} -- Wrong
+# run-name is evaluated before any job starts
+# At that time, runner context does NOT exist yet
 run-name: 06 - Contexts | DEBUG - ${{ inputs.debug }}
 on: 
   workflow_dispatch:
