@@ -1,0 +1,10 @@
+name: 06 - Contexts
+on: [push , workflow_dispatch]
+jobs:
+  Event-Name:
+    runs-on: ubuntu-latest
+    steps:
+        - name: Event name
+          run: |
+            echo "Running whenever a PR is closed"
+            echo "Event name: ${{ github.event_name }}"
