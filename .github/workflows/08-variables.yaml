@@ -26,7 +26,7 @@ jobs:
             echo "Workflow env var: ${{env.WORKFLOW_VAR}}"
             echo "Overwritten: ${{env.OVERWRITTEN}}"
             echo "Environment: ${{vars.MY_VAR}}"
-            echo "Environment 2: ${{vars.MY_VAR_2}}"
+            echo "Environment 2: ${{env.MY_VAR_WITH_DEFAULT_2}}"
           env:
             STEP_VAR: "I am a step env var"
             step_var2: "I am another step var"
