@@ -19,7 +19,10 @@ jobs:
 
         - name: Print PR labels using toJSON
           run: |
-            echo PR Label: ${{ toJSON(github.event.pull_request.labels) }}
+            echo PR Label: 
+                cat << EOF
+                ${{ toJSON(github.event.pull_request.labels) }}
+                EOF
             
         - name: Bug step
           if: ${{ failure() && contains(github.event.pull_request.title, 'fix') }}
