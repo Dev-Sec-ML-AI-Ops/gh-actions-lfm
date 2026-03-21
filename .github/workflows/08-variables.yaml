@@ -5,7 +5,7 @@ env:
   MY_VAR_WITH_DEFAULT_2: ${{ vars.MY_VAR_2 || 'dafault_value' }}
   WORKFLOW_VAR: "I am a workflow env var"
   OVERWRITTEN: "I will be overwritten"
-  UNDEFINED_VAR_WITH_DEFAULT: ${{ vars.UNDEFINED_VAR || default }}
+  UNDEFINED_VAR_WITH_DEFAULT: ${{ vars.UNDEFINED_VAR || 'default' }}
   
 on: 
   workflow_dispatch:
