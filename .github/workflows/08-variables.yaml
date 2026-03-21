@@ -7,7 +7,6 @@ env:
   OVERWRITTEN: "I will be overwritten"
   
 on: 
-  push:
   workflow_dispatch:
 
 jobs:
@@ -17,7 +16,6 @@ jobs:
         JOB_VAR: "I am a job env var"
         OVERWRITTEN: "I have been overwritten at the job level"
     steps:
-        
         - name: 'Print Env Variables'
           run: |
             echo "Step env var: ${{env.STEP_VAR}}"
