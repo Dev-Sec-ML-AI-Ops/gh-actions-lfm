@@ -24,7 +24,7 @@ jobs:
                 ${{ toJSON(github.event.pull_request.labels) }}
                 EOF
         
-        - name: Print PR labels using toJSON
+        - name: Print PR labels only
           run: |
                 cat << EOF
                 ${{ toJSON(github.event.pull_request.labels.*.name) }}
