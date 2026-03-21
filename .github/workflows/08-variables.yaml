@@ -2,6 +2,7 @@ name: 08 - Using Variables
 
 env:
   MY_VAR_WITH_DEFAULT: ${{ vars.MY_VAR || 'dafault_value' }}
+  MY_VAR_WITH_DEFAULT_2: ${{ vars.MY_VAR_2 || 'dafault_value' }}
   WORKFLOW_VAR: "I am a workflow env var"
   OVERWRITTEN: "I will be overwritten"
   
@@ -24,6 +25,8 @@ jobs:
             echo "Job env var: ${{ env.JOB_VAR }}"
             echo "Workflow env var: ${{env.WORKFLOW_VAR}}"
             echo "Overwritten: ${{env.OVERWRITTEN}}"
+            echo "Environment: ${{vars.MY_VAR}}"
+            echo "Environment 2: ${{vars.MY_VAR_2}}"
           env:
             STEP_VAR: "I am a step env var"
             step_var2: "I am another step var"
