@@ -23,9 +23,15 @@ jobs:
                 cat << EOF
                 ${{ toJSON(github.event.pull_request.labels) }}
                 EOF
-            
+        
+        - name: Print PR labels using toJSON
+          run: |
+                cat << EOF
+                ${{ toJSON(github.event.pull_request.labels.*.name) }}
+                EOF
+
         - name: Bug step
-          if: ${{ failure() && contains(github.event.pull_request.title, 'fix') }}
+          if: ${{ !cancelled() && contains(github.event.pull_request.title, 'fix') }}
           run: |
             echo I am a bug fix
 
@@ -33,14 +39,15 @@ jobs:
           run: sleep 20
 
         - name: Failing step
-          run: exit 0
+          run: exit 0 ## Success
+          # exit 1 ## Failure
 
         - name: I will be skipped
-          if: success()
+          if: ${{ success() }}
           run: echo "I will print if previous steps succeed."
 
         - name: I will execute
-          if: failure()
+          if: ${{ failure() }}
           run: echo "I will print if any previous step fails."
         
         - name: I will execute
@@ -48,5 +55,5 @@ jobs:
           run: echo "I will always print, except when the workflow is cancelled."
         
         - name: I will execute when cancelled
-          if: cancelled()
-          run: echo "Print when workflow is cancelled."
+          if: ${{ cancelled() }}
+          run: echo "Print when workflow has been cancelled."
