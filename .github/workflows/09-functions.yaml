@@ -1,5 +1,4 @@
 name: 09 - Using Functions
-#run-name: 09 - Using Functions | DEBUG - ${{ inputs.debug && 'ON' || 'OFF'}}
 
 on: 
   pull_request:
