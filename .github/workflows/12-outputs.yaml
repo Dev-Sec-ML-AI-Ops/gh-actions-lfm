@@ -33,8 +33,19 @@ jobs:
             echo Printing GITHUB OUTPUT content
             echo 👇👇👇👇👇👇👇👇
             cat "$GITHUB_OUTPUT" 
+            #echo "mistake=true" > "$GITHUB_OUTPUT"
+            #echo Again Printing GITHUB OUTPUT content
+            #echo 👇👇👇👇👇👇👇👇
+            #cat "$GITHUB_OUTPUT" 
+            : << 'COMMENT'
+            This is a multiline comment
+            You can write anything here
+            Even multiple lines
+            COMMENT
+        - name: Step with mistake
+          run: |
             echo "mistake=true" > "$GITHUB_OUTPUT"
-            echo Again Printing GITHUB OUTPUT content
+            echo Printing GITHUB OUTPUT content
             echo 👇👇👇👇👇👇👇👇
             cat "$GITHUB_OUTPUT" 
   deploy:
