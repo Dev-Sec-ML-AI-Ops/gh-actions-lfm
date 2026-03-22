@@ -43,7 +43,7 @@ jobs:
     steps:
         - name: Running E2E tests
           run: |
-            Running E2E tests
+            echo Running E2E tests
 
   load-tests:
     runs-on: ubuntu-latest
