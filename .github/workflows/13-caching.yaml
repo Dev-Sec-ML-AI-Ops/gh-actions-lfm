@@ -8,6 +8,14 @@ on:
             type: boolean
             description: Whether to execute cache step
             default: true
+        node-version:
+            type: choice
+            options:
+             - 20.x
+             - 22.x
+             - 24.x
+            description: Node version
+            default: 24.x
 
 jobs:
   build:
@@ -21,8 +29,16 @@ jobs:
         - name: Setup Node
           uses: actions/setup-node@v6
           with:
-            node-version: '24.x'
+            node-version: ${{inputs.node-version}}
+        - name: Download cached dependencies
+          id: cache
+          if: ${{inputs.use-cache}}
+          uses: actions/cache@v5
+          with:
+            path: "13-caching/react-app/node_modules"
+            key: deps-node-modules-${{ hashFiles('13-caching/react-app/package-lock.json') }}
         - name: Install Dependencies
+          if: ${{steps.cache.outputs.cache-hit == 'true'}}
           run: npm ci
         - name: Testing
           run: npm run test
