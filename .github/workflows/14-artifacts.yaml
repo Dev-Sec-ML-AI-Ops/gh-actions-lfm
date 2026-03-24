@@ -47,14 +47,14 @@ jobs:
         - name: Upload coverage report
           uses: actions/upload-artifact@v6
           with:
-            name: env.test-coverage-key
+            name: ${{ env.test-coverage-key }}
             path: 14-artifacts/react-app/coverage
         - name: Build code
           run: npm run build
         - name: Upload build files
           uses: actions/upload-artifact@v6
           with:
-            name: env.build-artifact-key
+            name: ${{ env.build-artifact-key }}
             path: 14-artifacts/react-app/build
   deploy:
     runs-on: ubuntu-latest
@@ -63,7 +63,7 @@ jobs:
         - name: Download Build Files
           uses: actions/download-artifact@v6
           with:
-            name: env.build-artifact-key
+            name: ${{ env.build-artifact-key }}
             path: build
 
         - name: Show folder structure  
