@@ -26,6 +26,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
         - name: Build
+         #inputs.tag.options is invalid. inputs.tag is just the selected value like v1/v2/v3; 
+         #there is no .options property at runtime.
           run: |
             echo "Building from tag using inputs.tag.options: ${{ inputs.tag.options }}"
             echo "Building from tag using inputs.tag: ${{ inputs.tag }}"
