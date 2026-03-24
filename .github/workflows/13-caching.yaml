@@ -21,6 +21,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      NODE_VERSION: ${{ inputs.node-version || '24.x' }}
     defaults: 
       run:
         working-directory: 13-caching/react-app
@@ -31,7 +33,7 @@ jobs:
         - name: Setup Node
           uses: actions/setup-node@v6
           with:
-            node-version: ${{ inputs.node-version }}
+            node-version: ${{ env.NODE_VERSION }}
 
         - name: Download cached dependencies
           id: cache
@@ -39,7 +41,7 @@ jobs:
           uses: actions/cache@v5
           with:
             path: "13-caching/react-app/node_modules"
-            key: deps-node-modules-${{ hashFiles('13-caching/react-app/package-lock.json') }}
+            key: deps-node-modules-${{ env.NODE_VERSION }}-${{ hashFiles('13-caching/react-app/package-lock.json') }}
 
         - name: Install Dependencies
           if: steps.cache.outputs.cache-hit != 'true'
