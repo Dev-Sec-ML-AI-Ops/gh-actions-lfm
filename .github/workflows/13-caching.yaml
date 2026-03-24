@@ -11,6 +11,7 @@ on:
         node-version:
             type: choice
             options:
+             - 18.x
              - 20.x
              - 22.x
              - 24.x
@@ -26,23 +27,29 @@ jobs:
     steps:
         - name: Checkout code
           uses: actions/checkout@v6
+
         - name: Setup Node
           uses: actions/setup-node@v6
           with:
-            node-version: ${{inputs.node-version}}
+            node-version: ${{ inputs.node-version }}
+
         - name: Download cached dependencies
           id: cache
-          if: ${{inputs.use-cache}}
+          if: ${{ inputs.use-cache }}
           uses: actions/cache@v5
           with:
             path: "13-caching/react-app/node_modules"
             key: deps-node-modules-${{ hashFiles('13-caching/react-app/package-lock.json') }}
+
         - name: Install Dependencies
-          if: ${{steps.cache.outputs.cache-hit == 'false'}}
+          if: steps.cache.outputs.cache-hit != 'true'
           run: npm ci
+
         - name: Testing
           run: npm run test
+
         - name: Building
           run: npm run build
+
         - name: Deploying to nonprod
           run: echo Deploying to nonprod.
