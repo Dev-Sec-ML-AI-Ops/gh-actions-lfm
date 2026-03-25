@@ -5,6 +5,7 @@ jobs:
   backwards-compatibility:
     name: ${{ matrix.os }}-${{ matrix.node }}
     strategy:
+        # disable fail-fast so all matrix jobs run even if one fails
         fail-fast: false # default true
         matrix:
             node: [20.x, 22.x, 24.x]
