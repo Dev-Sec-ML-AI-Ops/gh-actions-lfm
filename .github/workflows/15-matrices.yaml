@@ -9,7 +9,6 @@ jobs:
             node: [20.x, 22.x, 24.x]
             os: 
                 - ubuntu-latest
-                - macos-latest
                 - windows-latest
             
     runs-on: ${{ matrix.os }}
@@ -20,5 +19,5 @@ jobs:
             node-version: ${{ matrix.node }}
 
         - name: Perform some tests
-          run: echo Running tests on OS <${{runner.os}}> or <${{matrix.os}}> and NodeJS <${{matrix.node}}>
+          run: echo "Running tests on OS ${{matrix.os}} and NodeJS ${{matrix.node}}"
 
