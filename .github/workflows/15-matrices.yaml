@@ -57,10 +57,16 @@ jobs:
                   shape: triangle
                 
                 - opacity: 50
+
+                - color: green
+                  shape: circle
+                  size: medium
             
             exclude:
-                - opacity: 75
-                
+               # - opacity: 75  # Get Error: Matrix exclude key 'opacity' does not match any key within the matrix
+               - color: green
+                 shape: circle
+
     name: ${{ matrix.color }}-${{ matrix.shape }}-${{ matrix.size }}-${{ matrix.opacity }}
     steps:
         - name: Dummy step
