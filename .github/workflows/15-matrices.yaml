@@ -11,7 +11,7 @@ jobs:
             node: [20.x, 22.x, 24.x]
             os: 
                 - ubuntu-latest
-                - windows-latest
+                #- windows-latest
             include:
                 - os: ubuntu-latest
                   node: 18.x
@@ -57,6 +57,10 @@ jobs:
                   shape: triangle
                 
                 - opacity: 50
+            
+            exclude:
+                - opacity: 75
+                
     name: ${{ matrix.color }}-${{ matrix.shape }}-${{ matrix.size }}-${{ matrix.opacity }}
     steps:
         - name: Dummy step
