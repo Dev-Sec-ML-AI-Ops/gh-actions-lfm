@@ -6,7 +6,7 @@ jobs:
     name: ${{ matrix.os }}-${{ matrix.node }}
     strategy:
         matrix:
-            node: [20, 22, 24]
+            node: [20.x, 22.x, 24.x]
             os: 
                 - ubuntu-latest
                 - macos-latest
@@ -20,5 +20,5 @@ jobs:
             node-version: ${{ matrix.node }}
 
         - name: Perform some tests
-          run: echo Running tests on OS <${{runner.os}}> and NodeJS <${{matrix.node}}>"
+          run: echo Running tests on OS <${{runner.os}}> or <${{matrix.os}}> and NodeJS <${{matrix.node}}>"
 
