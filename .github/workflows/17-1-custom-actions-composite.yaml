@@ -7,7 +7,6 @@ on:
             type: choice
             options:
              - dev
-             - staging
              - prod
             description: Environment
             default: dev
@@ -29,6 +28,7 @@ jobs:
           with:
             node-version: 24.x
             working-dir: ${{ env.working-directory }}
+            target-env: ${{ inputs.target-env }}
 
         - name: Testing
           run: npm run test
