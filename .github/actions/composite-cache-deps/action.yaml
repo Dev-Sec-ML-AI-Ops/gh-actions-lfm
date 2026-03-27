@@ -3,9 +3,13 @@ description: This action allows to cache both Node and NPM dependencies based on
 inputs:
   node-version:
     description: NodeJS version to use
+    default: 24.x
+    required: false
 
   working-dir:
     description: The working directory of the application
+    default: '.'
+    required: false
 
 runs:
   using: composite
@@ -18,9 +22,10 @@ runs:
      id: cache
      uses: actions/cache@v5
      with:
-            path: ${{inputs.working-dir}}
-            key: deps-node-modules-${{ hashFiles(format('{0}/{1}', inputs.working-dir, 'package-lock.json')) }}
+        path: ${{ inputs.working-dir }}/node_modules
+        key: deps-node-modules-${{ hashFiles(format('{0}/{1}', inputs.working-dir, 'package-lock.json')) }}
    - name: Install dependencies
      shell: bash
      if: steps.cache.outputs.cache-hit != 'true'
      run: npm ci
+     working-directory: ${{ inputs.working-dir }}
