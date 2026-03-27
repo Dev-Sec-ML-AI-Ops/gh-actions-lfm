@@ -1,0 +1,23 @@
+name: 17 - 2 - Custom Actions - JS
+run-name: 17 - 2 - Custom Actions - JS
+on: 
+  workflow_dispatch:
+
+jobs:
+  dependency-update:
+    runs-on: ubuntu-latest
+    steps:
+        - name: Checkout code
+          uses: actions/checkout@v6
+
+        - name: Setup Node and NPM Dependencies
+          uses: ./.github/actions/js-dependency-update
+
+        - name: Testing
+          run: npm run test
+
+        - name: Building
+          run: npm run build
+
+        - name: Deploying to ${{ inputs.target-env }}
+          run: echo Deploying to ${{ inputs.target-env }}.
