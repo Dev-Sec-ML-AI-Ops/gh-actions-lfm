@@ -4,8 +4,19 @@ on:
   workflow_dispatch:
     inputs:
       url:
-        type: string
+        type: choice
+        options:
+         - 'https://www.google.com'
+         - 'Unreachable'
         default: 'https://www.google.com'
+      max_trails:
+        description: Maximum trials until action fails
+        required: false
+        default: '10'
+      delay:
+        description: Delay in seconds between trials
+        required: false
+        default: '5'
 
 jobs:
   ping-url:
@@ -16,3 +27,5 @@ jobs:
         uses: ./.github/actions/docker-ping-url
         with:
           url: ${{ inputs.url }}
+          max_trials: ${{ inputs.max_trails }}
+          delay: ${{ inputs.delay }}
