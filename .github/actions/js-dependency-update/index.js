@@ -15,7 +15,9 @@ const validateDirectoryName = ({ dirName }) =>
 const setupLogger = ({ debug, prefix } = { debug: false, prefix: '' }) => (
   {
     debug: (message) => {
-      core.info(`DEBUG ${prefix}${prefix ? ' : ' : ''}${message}`);
+      if (debug) {
+        core.info(`DEBUG ${prefix}${prefix ? ' : ' : ''}${message}`);
+      }
     },
     info: (message) => {
       core.info(`${prefix}${prefix ? ' : ' : ''}${message}`);
