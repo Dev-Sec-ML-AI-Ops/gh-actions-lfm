@@ -18,6 +18,9 @@ inputs:
   debug:
     description: Wheather the output debug messages to the console
     default: 'false'
+outputs:
+  updates-available:
+    description: Wheather there are updates available.
 runs:
   using: node24
   main: index.js

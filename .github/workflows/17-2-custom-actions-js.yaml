@@ -27,9 +27,14 @@ jobs:
 
         - name: Setup Node and NPM Dependencies
           uses: ./.github/actions/js-dependency-update
+          id: update-deps
           with:
             base-branch: ${{ inputs.base-branch }}
             head-branch: ${{ inputs.head-branch }}
             working-directory: ${{ inputs.working-dir }}
             gh-token: ${{ secrets.GITHUB_TOKEN }}
             debug: ${{ inputs.debug }}
+        
+        - name: Print custom action output
+          run: |
+              echo "Updates avialable: ${{ steps.update-deps.outputs.updates-avialable }}"
