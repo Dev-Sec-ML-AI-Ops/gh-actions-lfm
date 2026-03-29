@@ -19,4 +19,4 @@ jobs:
             echo "URL: ${{ needs.deploy.outputs.url }}"
   e2e-tests:
     needs: print-outputs
-    uses: "Dev-Sec-ML-AI-Ops/github-actions-course-example-e2e/.github/workflows/e2e.yaml@main"
+    uses: Dev-Sec-ML-AI-Ops/github-actions-course-example-e2e/.github/workflows/e2e.yaml@main
