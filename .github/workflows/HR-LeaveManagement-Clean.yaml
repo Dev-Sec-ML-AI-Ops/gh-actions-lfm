@@ -1,0 +1,132 @@
+name: HR Leave Management Clean CI/CD
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "HR.LeaveManagement.Clean/**"
+      - ".github/workflows/HR-LeaveManagement-Clean.yaml"
+  pull_request:
+    branches: [main]
+    paths:
+      - "HR.LeaveManagement.Clean/**"
+      - ".github/workflows/HR-LeaveManagement-Clean.yaml"
+  workflow_dispatch:
+
+concurrency:
+  group: hr-leavemanagement-clean-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  DOTNET_VERSION: "8.0.x"
+  SOLUTION_PATH: HR.LeaveManagement.Clean/HR.LeaveManagement.Clean.sln
+  API_PROJECT_PATH: HR.LeaveManagement.Clean/HR.LeaveManagement.Api/HR.LeaveManagement.Api.csproj
+  BUILD_CONFIGURATION: Release
+  PUBLISH_DIR: ./publish
+
+jobs:
+  build-test-publish:
+    name: Build, Test, and Publish
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Cache NuGet packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles('HR.LeaveManagement.Clean/**/*.csproj', 'HR.LeaveManagement.Clean/**/*.props', 'HR.LeaveManagement.Clean/**/*.targets', 'HR.LeaveManagement.Clean/HR.LeaveManagement.Clean.sln') }}
+          restore-keys: |
+            ${{ runner.os }}-nuget-
+
+      - name: Restore dependencies
+        run: dotnet restore ${{ env.SOLUTION_PATH }}
+
+      - name: Clean solution
+        run: dotnet clean ${{ env.SOLUTION_PATH }} --configuration ${{ env.BUILD_CONFIGURATION }} --no-restore
+
+      - name: Build solution
+        run: dotnet build ${{ env.SOLUTION_PATH }} --configuration ${{ env.BUILD_CONFIGURATION }} --no-restore
+
+      - name: Run unit and integration tests
+        run: >
+          dotnet test ${{ env.SOLUTION_PATH }}
+          --configuration ${{ env.BUILD_CONFIGURATION }}
+          --no-build
+          --logger "trx;LogFileName=test-results.trx"
+          --collect:"XPlat Code Coverage"
+          --results-directory ./TestResults
+
+      - name: Publish API project
+        run: >
+          dotnet publish ${{ env.API_PROJECT_PATH }}
+          --configuration ${{ env.BUILD_CONFIGURATION }}
+          --no-build
+          --output ${{ env.PUBLISH_DIR }}
+
+      - name: Upload published artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: hr-leavemanagement-clean-api
+          path: ${{ env.PUBLISH_DIR }}
+          if-no-files-found: error
+          retention-days: 7
+
+      - name: Upload test results artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: hr-leavemanagement-clean-test-results
+          path: ./TestResults
+          if-no-files-found: warn
+          retention-days: 7
+
+  # deploy-dev:
+  #   name: Deploy to Development
+  #   needs: build-test-publish
+  #   if: github.ref == 'refs/heads/main'
+  #   runs-on: ubuntu-latest
+  #   environment:
+  #     name: development
+  #     url: https://your-dev-url.example.com
+  #   steps:
+  #     - name: Download published artifact
+  #       uses: actions/download-artifact@v4
+  #       with:
+  #         name: hr-leavemanagement-clean-api
+  #         path: ./deploy-package
+  #
+  #     - name: Deploy application
+  #       run: echo "Add your deployment script here"
+  #       # Examples:
+  #       # Azure Web App:
+  #       # uses: azure/webapps-deploy@v3
+  #       # with:
+  #       #   app-name: your-app-name
+  #       #   publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+  #       #   package: ./deploy-package
+  #
+  # deploy-prod:
+  #   name: Deploy to Production
+  #   needs: deploy-dev
+  #   if: github.ref == 'refs/heads/main'
+  #   runs-on: ubuntu-latest
+  #   environment:
+  #     name: production
+  #     url: https://your-prod-url.example.com
+  #   steps:
+  #     - name: Download published artifact
+  #       uses: actions/download-artifact@v4
+  #       with:
+  #         name: hr-leavemanagement-clean-api
+  #         path: ./deploy-package
+  #
+  #     - name: Deploy application
+  #       run: echo "Add your production deployment script here"
