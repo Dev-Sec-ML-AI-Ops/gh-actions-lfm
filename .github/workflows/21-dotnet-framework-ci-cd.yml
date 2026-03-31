@@ -1,7 +1,7 @@
-name: .NET Framework CI/CD
+name: 21 - .NET Framework CI/CD
 
 on:
-  workflow_dispatch
+  workflow_dispatch:
   
 env:
   SOLUTION_PATH: devsecops-dotnet-github-actions-end-to-end-assignment-master/SomeConsoleApplication.sln
@@ -21,9 +21,6 @@ jobs:
       - name: Setup MSBuild
         uses: microsoft/setup-msbuild@v2
 
-      - name: Setup VSTest
-        uses: microsoft/setup-vstest@v1.1
-
       - name: Restore NuGet packages
         run: nuget restore ${{ env.SOLUTION_PATH }}
 
@@ -31,6 +28,16 @@ jobs:
         run: msbuild ${{ env.SOLUTION_PATH }} /p:Configuration=${{ env.BUILD_CONFIGURATION }}
 
       - name: Run unit tests
-        run: >
-          vstest.console.exe
-          "devsecops-dotnet-github-actions-end-to-end-assignment-master\SomeConsoleApplicationTest\bin\${{ env.BUILD_CONFIGURATION }}\SomeConsoleApplicationTest.dll"
+        shell: pwsh
+        run: |
+          $vstest = & "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe" `
+            -latest `
+            -products * `
+            -requires Microsoft.VisualStudio.PackageGroup.TestTools.Core `
+            -find "Common7\IDE\Extensions\TestPlatform\vstest.console.exe"
+          
+          if (-not $vstest) {
+            throw "vstest.console.exe was not found on the runner."
+          }
+
+          & $vstest "devsecops-dotnet-github-actions-end-to-end-assignment-master\SomeConsoleApplicationTest\bin\${{ env.BUILD_CONFIGURATION }}\SomeConsoleApplicationTest.dll"
