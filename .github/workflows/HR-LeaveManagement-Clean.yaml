@@ -32,12 +32,12 @@ jobs:
     steps:
       - name: List .NET SDK
         run: dotnet --list-sdks 
-        
+
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Setup .NET
-        uses: actions/setup-dotnet@v4
+        uses: actions/setup-dotnet@v5
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
 
@@ -45,7 +45,7 @@ jobs:
         run: dotnet --info
 
       - name: Cache NuGet packages
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: ~/.nuget/packages
           key: ${{ runner.os }}-nuget-${{ hashFiles('HR.LeaveManagement.Clean/**/*.csproj', 'HR.LeaveManagement.Clean/**/*.props', 'HR.LeaveManagement.Clean/**/*.targets', 'HR.LeaveManagement.Clean/HR.LeaveManagement.Clean.sln') }}
@@ -78,7 +78,7 @@ jobs:
           --output ${{ env.PUBLISH_DIR }}
 
       - name: Upload published artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: hr-leavemanagement-clean-api
           path: ${{ env.PUBLISH_DIR }}
@@ -87,7 +87,7 @@ jobs:
 
       - name: Upload test results artifact
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: hr-leavemanagement-clean-test-results
           path: ./TestResults
