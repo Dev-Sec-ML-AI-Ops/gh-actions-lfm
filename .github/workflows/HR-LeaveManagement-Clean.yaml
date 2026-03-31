@@ -18,7 +18,7 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  DOTNET_VERSION: "8.0.x"
+  DOTNET_VERSION: "8.0.0"
   SOLUTION_PATH: HR.LeaveManagement.Clean/HR.LeaveManagement.Clean.sln
   API_PROJECT_PATH: HR.LeaveManagement.Clean/HR.LeaveManagement.Api/HR.LeaveManagement.Api.csproj
   BUILD_CONFIGURATION: Release
@@ -38,6 +38,9 @@ jobs:
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
 
+      - name: Show .NET info
+        run: dotnet --info
+
       - name: Cache NuGet packages
         uses: actions/cache@v4
         with:
@@ -50,7 +53,7 @@ jobs:
         run: dotnet restore ${{ env.SOLUTION_PATH }}
 
       - name: Clean solution
-        run: dotnet clean ${{ env.SOLUTION_PATH }} --configuration ${{ env.BUILD_CONFIGURATION }} --no-restore
+        run: dotnet clean ${{ env.SOLUTION_PATH }} --configuration ${{ env.BUILD_CONFIGURATION }}
 
       - name: Build solution
         run: dotnet build ${{ env.SOLUTION_PATH }} --configuration ${{ env.BUILD_CONFIGURATION }} --no-restore
