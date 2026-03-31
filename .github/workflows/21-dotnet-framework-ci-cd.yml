@@ -1,0 +1,36 @@
+name: .NET Framework CI/CD
+
+on:
+  workflow_dispatch
+  
+env:
+  SOLUTION_PATH: devsecops-dotnet-github-actions-end-to-end-assignment-master/SomeConsoleApplication.sln
+  BUILD_CONFIGURATION: Release
+
+jobs:
+  build-test:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup NuGet
+        uses: NuGet/setup-nuget@v2
+
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v2
+
+      - name: Setup VSTest
+        uses: microsoft/setup-vstest@v1.1
+
+      - name: Restore NuGet packages
+        run: nuget restore ${{ env.SOLUTION_PATH }}
+
+      - name: Build solution
+        run: msbuild ${{ env.SOLUTION_PATH }} /p:Configuration=${{ env.BUILD_CONFIGURATION }}
+
+      - name: Run unit tests
+        run: >
+          vstest.console.exe
+          "devsecops-dotnet-github-actions-end-to-end-assignment-master\SomeConsoleApplicationTest\bin\${{ env.BUILD_CONFIGURATION }}\SomeConsoleApplicationTest.dll"

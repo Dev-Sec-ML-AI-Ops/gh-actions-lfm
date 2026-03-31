@@ -1,3 +1,19 @@
-node_modules
-!.github/actions/**/node_modules
-venv
+node_modules/
+!.github/actions/**/node_modules/
+venv/
+
+# .NET / Visual Studio
+**/bin/
+**/obj/
+**/TestResults/
+*.user
+*.rsuser
+*.suo
+*.userosscache
+*.sln.docstates
+.vs/
+
+# NuGet
+**/packages/
+*.nupkg
+*.snupkg
