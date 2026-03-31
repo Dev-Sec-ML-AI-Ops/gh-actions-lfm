@@ -18,7 +18,7 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  DOTNET_VERSION: "8.0.0"
+  DOTNET_VERSION: "8.0.x"
   SOLUTION_PATH: HR.LeaveManagement.Clean/HR.LeaveManagement.Clean.sln
   API_PROJECT_PATH: HR.LeaveManagement.Clean/HR.LeaveManagement.Api/HR.LeaveManagement.Api.csproj
   BUILD_CONFIGURATION: Release
@@ -30,6 +30,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: List .NET SDK
+        run: dotnet --list-sdks 
+        
       - name: Checkout repository
         uses: actions/checkout@v4
 
