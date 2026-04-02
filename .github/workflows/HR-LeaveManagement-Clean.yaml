@@ -23,11 +23,17 @@ env:
   API_PROJECT_PATH: HR.LeaveManagement.Clean/HR.LeaveManagement.Api/HR.LeaveManagement.Api.csproj
   BUILD_CONFIGURATION: Release
   PUBLISH_DIR: ./publish
+  # Optional CLI log level for dotnet commands:
+  # quiet | minimal | normal | detailed | diagnostic
+  # DOTNET_VERBOSITY: diagnostic
 
 jobs:
   build-test-publish:
     name: Build, Test, and Publish
     runs-on: ubuntu-latest
+    # Optional debug flags to set in GitHub Actions variables/secrets:
+    # ACTIONS_STEP_DEBUG=true
+    # ACTIONS_RUNNER_DEBUG=true
 
     steps:
       - name: List .NET SDK
@@ -44,6 +50,12 @@ jobs:
       - name: Show .NET info
         run: dotnet --info
 
+      # Optional: uncomment to print whether GitHub debug flags are enabled.
+      # - name: Show debug flags
+      #   run: |
+      #     echo "ACTIONS_STEP_DEBUG=${ACTIONS_STEP_DEBUG}"
+      #     echo "ACTIONS_RUNNER_DEBUG=${ACTIONS_RUNNER_DEBUG}"
+
       - name: Cache NuGet packages
         uses: actions/cache@v5
         with:
@@ -54,12 +66,16 @@ jobs:
 
       - name: Restore dependencies
         run: dotnet restore ${{ env.SOLUTION_PATH }}
+        # Example verbose restore:
+        # run: dotnet restore ${{ env.SOLUTION_PATH }} --verbosity ${{ env.DOTNET_VERBOSITY }}
 
       - name: Clean solution
         run: dotnet clean ${{ env.SOLUTION_PATH }} --configuration ${{ env.BUILD_CONFIGURATION }}
 
       - name: Build solution
         run: dotnet build ${{ env.SOLUTION_PATH }} --configuration ${{ env.BUILD_CONFIGURATION }} --no-restore
+        # Example verbose build:
+        # run: dotnet build ${{ env.SOLUTION_PATH }} --configuration ${{ env.BUILD_CONFIGURATION }} --no-restore --verbosity ${{ env.DOTNET_VERBOSITY }}
 
       - name: Run unit and integration tests
         run: >
@@ -69,6 +85,12 @@ jobs:
           --logger "trx;LogFileName=test-results.trx"
           --collect:"XPlat Code Coverage"
           --results-directory ./TestResults
+        # Example verbose test:
+        # run: >
+        #   dotnet test ${{ env.SOLUTION_PATH }}
+        #   --configuration ${{ env.BUILD_CONFIGURATION }}
+        #   --no-build
+        #   --verbosity ${{ env.DOTNET_VERBOSITY }}
 
       - name: Publish API project
         run: >
